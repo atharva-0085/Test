@@ -1,0 +1,13 @@
+{% extends 'base/layout.html' %}
+{% block content %}
+<section class="job-details-section">
+    <h1>💼 Job Description</h1>
+    <div class="job-info-box">
+        <h2>Position: {{ job.title }}</h2>
+        <p><strong>Company:</strong> {{ job.company }}</p>
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p><strong>HQ:</strong> {{ job.hq }}</p>
+        <p><strong>Description:</strong><br>{{ job.description }}</p>
+    </div>
+</section>
+{% endblock %}

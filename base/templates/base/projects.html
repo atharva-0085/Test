@@ -1,0 +1,28 @@
+{% extends 'base/layout.html' %}
+{% load static %}
+
+{% block content %}
+<section class="projects-section">
+    <h1>🚀 Projects</h1>
+    <p class="subtitle">Explore collaborative and individual projects from members of the UniSphere community. Whether you're showcasing your work or looking for inspiration, you're in the right place!</p>
+
+    <div class="project-actions">
+        <a href="{% url 'add_project' %}" class="btn-add-project">➕ Add New Project</a>
+    </div>
+
+    {% if projects %}
+    <div class="projects-container">
+        {% for project in projects %}
+        <div class="project-card">
+            <h3 class="project-title">💼 {{ project.title }}</h3>
+            <p><strong>Description:</strong> {{ project.description }}</p>
+            <p><strong>Tech Stack:</strong> {{ project.tech_stack }}</p>
+            <p><strong>Posted by:</strong> <a href="{% url 'user-profile' project.creator.id %}">{{ project.creator.username }}</a></p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="no-projects">No projects posted yet. Be the first to share yours!</p>
+    {% endif %}
+</section>
+{% endblock %}
