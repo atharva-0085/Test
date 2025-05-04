@@ -20,17 +20,20 @@ class Group(models.Model):
         return self.name
 
 class Event(models.Model):
-    host = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    host = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
     location = models.CharField(max_length=200)
     date = models.DateField()
     time = models.TimeField()
     major = models.CharField(max_length=100)
+    department = models.CharField(max_length=100, default="Student Affairs")
+    attendees = models.ManyToManyField(Profile, related_name='attended_events', blank=True)  # 👈 Add this line
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
 
 class HousingListing(models.Model):
     title = models.CharField(max_length=100)
@@ -85,4 +88,14 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+class ProjectComment(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} on {self.project.title}"
+
 

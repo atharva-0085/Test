@@ -13,6 +13,7 @@ from .models import Project
 from .forms import ProjectForm
 
 
+
 def landing_page(request):
     return render(request, 'base/landing_page.html')
 
@@ -66,6 +67,13 @@ def create_event(request):
             return redirect('dashboard')
     return render(request, 'base/create_event.html', {'form': form})
 
+@login_required
+def leave_event(request, event_id):
+    event = Event.objects.get(id=event_id)
+    profile = request.user.profile
+    event.attendees.remove(profile)
+    return redirect('events')  # or to a specific event page
+
 
 def events_list(request):
     events = Event.objects.all()
@@ -97,6 +105,12 @@ def join_group(request, group_id):
     profile = request.user.profile
     if profile not in group.members.all():
         group.members.add(profile)
+    return redirect('group_discovery')
+
+def leave_group(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    profile = request.user.profile
+    group.members.remove(profile)
     return redirect('group_discovery')
 
 def housing_search(request):
@@ -149,6 +163,25 @@ def add_project(request):
         form = ProjectForm()
     return render(request, 'base/add_project.html', {'form': form})
 
+@login_required
+def add_comment(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        if text:
+            ProjectComment.objects.create(project=project, user=request.user, text=text)
+    return redirect('projects')
+
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.user == project.user:
+        project.delete()
+        return redirect('projects_list')  # or 'projects' if that's your named URL
+    else:
+        return redirect('projects_list')  # prevent others from deleting
+
 
 def user_profile(request, pk):
     return render(request, 'base/user_profile.html', {'pk': pk})
@@ -165,7 +198,7 @@ def job_search(request):
 from django.shortcuts import render, get_object_or_404
 from .models import Job
 
-def job_details(request, job_id):
+def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     return render(request, 'base/job_detail.html', {'job': job})
 

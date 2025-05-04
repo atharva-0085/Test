@@ -351,3 +351,28 @@ footer {
 .btn-submit:hover {
     background-color: #056c03;
 }
+
+.landing_body {
+    background-image: url('/static/images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    color: white;
+}
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+}
+.hero-buttons .btn {
+    transition: 0.3s ease-in-out;
+}
+
+.hero-buttons .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+}
+

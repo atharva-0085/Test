@@ -27,8 +27,11 @@ urlpatterns = [
     # --- Events ---
     path('events/', views.events_page, name="events"),
     path('events/create/', views.create_event, name="create_event"),
+    path('events/leave/<int:event_id>/', views.leave_event, name='leave_event'),
     path('projects/', views.project_list, name='project_list'),
     path('projects/create/', views.add_project, name='add-project'),
+    path('projects/comment/<int:project_id>/', views.add_comment, name='add_comment'),
+    path('projects/delete/<int:project_id>/', views.delete_project, name='delete_project'),
 
 
     # --- Groups ---
@@ -37,12 +40,14 @@ urlpatterns = [
     path('create-room/', views.create_room, name='create-room'),
     path('groups/join/<int:group_id>/', views.join_group, name="join_group"),
     path('groups/<int:group_id>/chat/', views.group_chat, name="group_chat"),
+    path('groups/leave/<int:group_id>/', views.leave_group, name='leave_group'),
+
 
     # --- Housing ---
     path('housing/', views.housing_search, name="housing_search"),
      
     path('jobs/', views.job_search, name='job_search'), 
-    path('jobs/<int:job_id>/', views.job_details, name='job_details'),
+    path('jobs/<int:job_id>/', views.job_detail, name='job_detail'),
     path('profile/<int:pk>/', views.user_profile, name='user-profile'),
     path('events/join/<int:event_id>/', views.join_event, name='join_event'),
 

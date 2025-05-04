@@ -12,16 +12,21 @@
                 <h3 class="card-title">🎉 {{ event.title }}</h3>
                 <p><strong>Date:</strong> {{ event.date }}</p>
                 <p><strong>Location:</strong> {{ event.location }}</p>
-                <p><strong>Hosted by:</strong> {{ event.host.user.username }}</p>
+                <p><strong>Hosted by:</strong> {{ event.department }}</p>
                 <p>{{ event.description }}</p>
 
-                {% if request.user.is_authenticated and request.user.profile in event.attendees.all %}
-                    <span class="badge bg-success">✔️ You're attending</span>
-                {% elif request.user.is_authenticated %}
-                    <form method="POST" action="{% url 'join_event' event.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-primary mt-2">Join Event</button>
-                    </form>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.profile in event.attendees.all %}
+                        <form method="POST" action="{% url 'leave_event' event.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger mt-2">❌ Leave Event</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{% url 'join_event' event.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary mt-2">Join Event</button>
+                        </form>
+                    {% endif %}
                 {% else %}
                     <a href="{% url 'login' %}?next={% url 'events' %}" class="btn btn-outline-secondary mt-2">Login to Join</a>
                 {% endif %}

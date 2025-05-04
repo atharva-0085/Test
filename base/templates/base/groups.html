@@ -22,6 +22,10 @@
 
             {% if user.profile in group.members.all %}
                 <p class="text-success">✅ You've joined this group.</p>
+                <form method="POST" action="{% url 'leave_group' group.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Leave Group</button>
+                </form>
             {% else %}
                 <form method="POST" action="{% url 'join_group' group.id %}">
                     {% csrf_token %}
